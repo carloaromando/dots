@@ -9,12 +9,6 @@
             name = "carloaromando";
             email = "carlo.aromando@gmail.com";
           };
-          signing = {
-            key = "0";
-            signByDefault = false;
-            # gpgPath = "${pkgs.gnupg}";
-            gpgPath = "/opt/local/bin/gpg";
-          };
         };
         condition = "gitdir:~/dots/";
       }
