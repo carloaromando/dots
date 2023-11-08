@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  home.packages =  with pkgs; [
+  home.packages = with pkgs; [
     # shell
     gnupg
     htop
@@ -23,11 +23,13 @@
     tshark
 
     # programming
+    nil
+    nixpkgs-fmt
     bash
     ninja
     clang-tools_12
     bazelisk
-    bazel-buildtools
+    # bazel-buildtools
     python3
     poetry
     pylint

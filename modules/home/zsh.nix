@@ -24,7 +24,7 @@
       lt = "ls --tree";
       clr = "clear";
       tup = "${lib.getExe pkgs.tilt} -f ~cubbit/coordinator/Tiltfile up";
-      tdown = "${pkgs.tilt} -f ~cubbit/coordinator/Tiltfile down";
+      tdown = "${lib.getExe pkgs.tilt} -f ~cubbit/coordinator/Tiltfile down";
       rgf = "${lib.getExe pkgs.ripgrep} --files | ${lib.getExe pkgs.ripgrep}";
     };
     plugins = [

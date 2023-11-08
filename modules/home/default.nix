@@ -1,4 +1,3 @@
-{ self, ... }:
 {
   flake = {
     homeModules = {
@@ -11,9 +10,9 @@
           ./ssh.nix
           ./pass.nix
         ];
-        
+
         home.stateVersion = "22.11";
-        
+
         programs.home-manager.enable = true;
         programs.micro.enable = true;
         programs.bat.enable = true;

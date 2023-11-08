@@ -3,7 +3,6 @@ final: prev: {
     inherit (prev.coder.drvAttrs)
       pname subPackages doCheck preBuild
       tags nativeBuildInputs postInstall;
-    inherit (prev.coder);
 
     version = "0.17.4";
 

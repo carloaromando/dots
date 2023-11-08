@@ -1,5 +1,3 @@
-{ self, config, ... }:
-
 {
   flake = {
     nixosModules = {

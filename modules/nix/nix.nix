@@ -1,5 +1,6 @@
 { flake, pkgs, ... }:
 {
+
   nixpkgs = {
     config = {
       allowBroken = true;
@@ -7,9 +8,10 @@
       allowUnfree = true;
     };
     overlays = [
-      (import ../pkgs/bazelisk.nix)
-      (import ../pkgs/odin-cli.nix { inherit (flake.inputs) odin-cli; })
-    #   (import ../pkgs/coder.nix)
+      flake.inputs.nil.overlays.default
+      (import ../../overlays/bazelisk.nix)
+      (import ../../overlays/odin-cli.nix { inherit (flake.inputs) odin-cli; })
+      #   (import ../../overlays/coder.nix)
     ];
   };
 
@@ -21,5 +23,9 @@
       experimental-features = "nix-command flakes repl-flake";
       trusted-users = [ "root" "carlo" ];
     };
+    extraOptions = ''
+      keep-outputs = true
+      keep-derivations = true
+    '';
   };
 }

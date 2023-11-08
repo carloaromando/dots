@@ -1,4 +1,3 @@
-{ pkgs, ... }:
 {
   programs.git = {
     enable = true;
@@ -17,13 +16,11 @@
           user = {
             name = "carlo-aromando";
             email = "carlo.aromando@cubbit.io";
+            signingKey = "A941F87322270BFB";
           };
-          signing = {
-            key = "A941F87322270BFB";
-            signByDefault = true;
-            # gpgPath = "${pkgs.gnupg}";
-            gpgPath = "/opt/local/bin/gpg";
-          };
+          commit.gpgSign = true;
+          # gpgPath = "${pkgs.gnupg}";
+          gpg.program = "/opt/local/bin/gpg";
         };
         condition = "gitdir:~/src/work/";
       }
