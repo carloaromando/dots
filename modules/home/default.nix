@@ -9,6 +9,7 @@
           ./git.nix
           ./ssh.nix
           ./pass.nix
+          ./emacs
         ];
 
         home.stateVersion = "22.11";

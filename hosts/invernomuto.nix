@@ -26,22 +26,23 @@ in
       "iina"
       "dmenu-mac"
     ];
-    taps = [
-      "d12frosted/emacs-plus"
-    ];
-    brews = [
-      {
-        name = "emacs-plus";
-        args = [
-          "with-imagemagick"
-          "with-poll"
-          "with-nobu417-big-sur-icon"
-        ];
-        start_service = true;
-        restart_service = true;
-        link = true;
-      }
-    ];
+    # taps = [
+    #   "d12frosted/emacs-plus"
+    # ];
+    # brews = [
+    #   {
+    #     name = "emacs-plus";
+    #     args = [
+    #       "with-imagemagick"
+    #       "with-poll"
+    #       "with-nobu417-big-sur-icon"
+    #       "with-no-titlebar"
+    #     ];
+    #     start_service = true;
+    #     restart_service = true;
+    #     link = true;
+    #   }
+    # ];
   };
 
   launchd.user.agents.dmenu = {
