@@ -27,23 +27,19 @@
     nixpkgs-fmt
     bash
     ninja
-    clang-tools_12
-    bazelisk
-    # bazel-buildtools
     python3
     poetry
     pylint
     black
-    tilt
     nodejs
     yarn
     shellcheck
     odin-cli
-    go-task
     act
     awscli2
     go
     coder
+    minio-client
 
     # virtualization
     qemu

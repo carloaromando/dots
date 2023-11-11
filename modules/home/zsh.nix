@@ -71,6 +71,8 @@
       MNML_INFOLN=()
       MNML_MAGICENTER=()
       MNML_RPROMPT=(nix_shell_prompt $MNML_RPROMPT);
+
+      bindkey "^[[3~" delete-char
     '';
     sessionVariables = {
       DIRENV_LOG_FORMAT = "";
