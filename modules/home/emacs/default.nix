@@ -18,6 +18,9 @@ in
       override = epkgs: epkgs // {
         inherit rubrication-theme;
       };
+      extraEmacsPackages = epkgs: with epkgs; [
+        use-package
+      ];
     };
   };
 }

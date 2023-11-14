@@ -3,7 +3,7 @@
 
 (let ((fg "#111111")
       (fg-table "#222291")
-      (bg "#f6f6f6")
+      (bg "#ffffff")
       (bg-light "#ddddd8")
       (bg-modeline "#2c2c2c")
       (fg-light "#ddddd8")

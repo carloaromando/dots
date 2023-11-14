@@ -3,9 +3,10 @@
   home.packages = with pkgs; [
     # shell
     gnupg
+    pinentry
+    pinentry_mac
     htop
     ripgrep
-    comma
     duf
     eza
     jq
@@ -13,6 +14,7 @@
     pv
     entr
     shell2http
+    coreutils-prefixed
 
     # networking
     curl

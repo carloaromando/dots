@@ -27,5 +27,9 @@
       keep-outputs = true
       keep-derivations = true
     '';
+    gc = {
+      automatic = pkgs.lib.mkDefault true;
+      options = pkgs.lib.mkDefault "--delete-older-than 1w";
+    };
   };
 }

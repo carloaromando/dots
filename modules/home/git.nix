@@ -1,3 +1,4 @@
+{ pkgs, ... }:
 {
   programs.git = {
     enable = true;
@@ -19,8 +20,7 @@
             signingKey = "A941F87322270BFB";
           };
           commit.gpgSign = true;
-          # gpgPath = "${pkgs.gnupg}";
-          gpg.program = "/opt/local/bin/gpg";
+          gpg.program = "${pkgs.gnupg}/bin/gpg";
         };
         condition = "gitdir:~/src/work/";
       }
