@@ -18,6 +18,11 @@
   nix = {
     package = pkgs.nixUnstable;
     registry.nixpkgs.flake = flake.inputs.nixpkgs; # Make `nix shell` etc use pinned nixpkgs
+    nixPath = [
+      "nixpkgs=${flake.inputs.nixpkgs}"
+      "darwin=${flake.inputs.darwin}"
+      "home-manager=${flake.inputs.home-manager}"
+    ];
     settings = {
       max-jobs = "auto";
       experimental-features = "nix-command flakes repl-flake";

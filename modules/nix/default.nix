@@ -1,9 +1,23 @@
+{ self, ... }:
 {
   flake = {
     nixosModules = {
-      # NixOS modules that are known to work on nix-darwin.
       common.imports = [
         ./nix.nix
+      ];
+
+      home-base = {
+        home-manager.users.carlo = { pkgs, ... }: {
+          imports = [
+            self.homeModules.base
+          ];
+        };
+      };
+
+      minimal.imports = [
+        self.nixosModules_.home-manager
+        self.nixosModules.home-base
+        self.nixosModules.common
       ];
     };
   };

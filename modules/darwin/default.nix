@@ -6,7 +6,7 @@
       home = {
         home-manager.users.carlo = { pkgs, ... }: {
           imports = [
-            self.homeModules.common
+            self.homeModules.default
           ];
         };
       };

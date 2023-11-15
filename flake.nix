@@ -23,6 +23,11 @@
 
     nixos-flake.url = "github:srid/nixos-flake";
 
+    nixos-generators = {
+      url = "github:nix-community/nixos-generators";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nil = {
       url = "github:oxalica/nil";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -41,7 +46,7 @@
 
   outputs = inputs@{ self, flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = [ "x86_64-darwin" ];
+      systems = [ "x86_64-darwin" "x86_64-linux" ];
 
       imports = [
         inputs.nixos-flake.flakeModule
@@ -57,8 +62,24 @@
 
             imports = [
               self.darwinModules.default # Defined in modules/darwin/default.nix
-              ./hosts/invernomuto.nix
+              ./hosts/invernomuto
             ];
+          };
+        };
+
+        nixosConfigurations = {
+          akira = self.nixos-flake.lib.mkLinuxSystem {
+            nixpkgs.hostPlatform = "x86_64-linux";
+
+            imports = [
+              inputs.nixos-generators.nixosModules.all-formats
+              self.nixosModules.minimal
+              ./hosts/akira
+            ];
+
+            formatConfigs.raw-efi = { config, ... }: {
+              services.openssh.enable = true;
+            };
           };
         };
       };

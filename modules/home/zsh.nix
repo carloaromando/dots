@@ -13,9 +13,10 @@
       hack = "$HOME/src/hack";
     };
     shellAliases = {
-      nixswitch = "darwin-rebuild switch --flake $HOME/dots/.#";
-      nixup = "pushd ~/src/system-config; nix flake update; nixswitch; popd";
-      nixcollect = "nix-collect-garbage";
+      nixactivate = "pushd $HOME/dots; nix run .#activate; popd";
+      nixup = "pushd $HOME/dots; nix run .#update; popd";
+      # nixup = "pushd ~/src/system-config; nix flake update; nixactivate; popd";
+      nixgc = "nix store gc --debug";
       g = "${lib.getExe pkgs.git}";
       ls = "${lib.getExe pkgs.eza}";
       l = "ls";
@@ -66,11 +67,16 @@
           print "%B[nix shell]%b"
         fi
       }
+
+      function hostname_prompt
+      {
+        print "$(hostname -s)"
+      }
     '';
     initExtra = ''
       MNML_INFOLN=()
       MNML_MAGICENTER=()
-      MNML_RPROMPT=(nix_shell_prompt $MNML_RPROMPT);
+      MNML_RPROMPT=(nix_shell_prompt hostname_prompt $MNML_RPROMPT);
 
       bindkey "^[[3~" delete-char
     '';

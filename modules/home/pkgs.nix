@@ -2,32 +2,17 @@
 {
   home.packages = with pkgs; [
     # shell
-    gnupg
-    pinentry
     pinentry_mac
-    htop
-    ripgrep
-    duf
-    eza
-    jq
-    jo
     pv
     entr
     shell2http
     coreutils-prefixed
-
-    # networking
-    curl
-    netcat
-    nmap
     websocat
     kcat
-    tshark
 
     # programming
     nil
     nixpkgs-fmt
-    bash
     ninja
     python3
     poetry

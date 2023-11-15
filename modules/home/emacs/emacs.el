@@ -222,7 +222,57 @@
 ;; Direnv
 (use-package direnv
   :init
-  (direnv-mode))
+  (direnv-mode)
+  :config
+  (custom-set-variables
+   '(direnv-non-file-modes '(compilation-mode
+                             dired-mode
+                             eshell-mode
+                             magit-status-mode)))
+
+  ;; Enable direnv on eshell
+  (with-eval-after-load "eshell"
+    (defun eshell--direnv-path-env (&rest args)
+      "Update `eshell-path-env'."
+      (unless (file-remote-p default-directory)
+	(setq eshell-path-env (getenv "PATH"))))
+    
+    (advice-add 'eshell
+		:after #'eshell--direnv-path-env)
+
+    (defun direnv-update-directory-environment--eshell (&rest args)
+      "Update `eshell-path-env'."
+      (setq eshell-path-env (getenv "PATH")))
+    (advice-add 'direnv-update-directory-environment
+		:after #'direnv-update-directory-environment--eshell))
+
+  ;; Enable direnv on tramp
+;;   (defcustom my-direnv-enabled-hosts nil
+;;     "List of remote hosts to use Direnv on.
+
+;; Each host must have `direnv' executable accessible in the default
+;; environment."
+;;     :type '(repeat string)
+;;     :group 'my)
+
+;;   (defun tramp-sh-handle-start-file-process@my-direnv (args)
+;;     "Enable Direnv for hosts in `my-direnv-enabled-hosts'."
+;;     (with-parsed-tramp-file-name (expand-file-name default-directory) nil
+;;       (if (member host my-direnv-enabled-hosts)
+;;           (pcase-let ((`(,name ,buffer ,program . ,args) args))
+;;             `(,name
+;;               ,buffer
+;;               "direnv"
+;;               "exec"
+;;               ,localname
+;;               ,program
+;;               ,@args))
+;; 	args)))
+
+;;   (with-eval-after-load "tramp-sh"
+;;     (advice-add 'tramp-sh-handle-start-file-process
+;; 		:filter-args #'tramp-sh-handle-start-file-process@my-direnv))
+  )
 
 ;; Bazel
 (use-package bazel

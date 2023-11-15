@@ -1,11 +1,15 @@
 { pkgs, ... }:
-
-# See darwin/default.nix for other modules in use.
 let
   username = "carlo";
 in
 {
   environment.systemPackages = with pkgs; [
+    git
+    zsh
+    curl
+    wget
+    micro
+    htop
   ];
 
   security.pam.enableSudoTouchIdAuth = true;
@@ -28,6 +32,7 @@ in
     ];
   };
 
+  # Not working
   launchd.user.agents.dmenu = {
     command = "/usr/local/bin/dmenu-mac";
     serviceConfig = {
