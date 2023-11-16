@@ -7,7 +7,7 @@
 
   # ssh
   services.openssh.enable = true;
-  services.openssh.permitRootLogin = "yes";
+  services.openssh.settings.PermitRootLogin = "yes";
   users.users.root.password = "nixos";
 
   security = {
@@ -22,7 +22,7 @@
   };
 
   fileSystems."/boot" = {
-    device = "/dev/vda1"; # /dev/disk/by-label/ESP
+    device = lib.mkForce "/dev/vda1"; # /dev/disk/by-label/ESP
     fsType = "vfat";
   };
 
@@ -35,6 +35,7 @@
 
   # misc
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelModules = [ "kvm-amd" "kvm-intel" ];
 
   # pkgs
   environment.systemPackages = with pkgs; [
@@ -52,6 +53,13 @@
     shell = pkgs.zsh;
     isNormalUser = true;
     group = "users";
+    extraGroups = [
+      "qemu-libvirtd"
+      "libvirtd"
+      "wheel"
+      "disk"
+      "networkmanager"
+    ];
     home = "/home/carlo";
   };
 

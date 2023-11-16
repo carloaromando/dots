@@ -45,43 +45,63 @@
   };
 
   outputs = inputs@{ self, flake-parts, ... }:
-    flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = [ "x86_64-darwin" "x86_64-linux" ];
+    flake-parts.lib.mkFlake { inherit inputs; }
+      {
+        systems = [ "x86_64-darwin" "x86_64-linux" ];
 
-      imports = [
-        inputs.nixos-flake.flakeModule
-        ./modules/nix
-        ./modules/home
-        ./modules/darwin
-      ];
+        imports = [
+          inputs.nixos-flake.flakeModule
+          ./modules/nixos
+          ./modules/home
+          ./modules/darwin
+        ];
 
-      flake = {
-        darwinConfigurations = {
-          invernomuto = self.nixos-flake.lib.mkMacosSystem {
-            nixpkgs.hostPlatform = "x86_64-darwin";
+        flake = {
+          darwinConfigurations = {
+            invernomuto = self.nixos-flake.lib.mkMacosSystem {
+              nixpkgs.hostPlatform = "x86_64-darwin";
 
-            imports = [
-              self.darwinModules.default # Defined in modules/darwin/default.nix
-              ./hosts/invernomuto
-            ];
+              imports = [
+                self.darwinModules.default # Defined in modules/darwin/default.nix
+                ./hosts/invernomuto
+              ];
+            };
           };
-        };
 
-        nixosConfigurations = {
-          akira = self.nixos-flake.lib.mkLinuxSystem {
-            nixpkgs.hostPlatform = "x86_64-linux";
+          nixosConfigurations = {
+            akira = self.nixos-flake.lib.mkLinuxSystem {
+              nixpkgs.hostPlatform = "x86_64-linux";
 
-            imports = [
-              inputs.nixos-generators.nixosModules.all-formats
-              self.nixosModules.minimal
-              ./hosts/akira
-            ];
-
-            formatConfigs.raw-efi = { config, ... }: {
-              services.openssh.enable = true;
+              imports = [
+                inputs.nixos-generators.nixosModules.all-formats
+                self.nixosModules.minimal # Defined in modules/nixos/default.nix
+                ./hosts/akira
+              ];
             };
           };
         };
+        #   }
+        # // {
+        #   packages.x86_64-linux = {
+        #     mkAkiraImg = inputs.nixos-generators.nixosGenerate {
+        #       system = "x86_64-linux";
+        #       modules = [
+        #         # you can include your own nixos configuration here, i.e.
+        #         # ./configuration.nix
+        #         ./hosts/akira
+        #       ];
+        #       format = "raw-efi";
+
+        #       # optional arguments:
+        #       # explicit nixpkgs and lib:
+        #       pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
+        #       lib = inputs.nixpkgs.legacyPackages.x86_64-linux.lib;
+        #       specialArgs = { flake = self; };
+
+        #       # you can also define your own custom formats
+        #       # customFormats = { "myFormat" = <myFormatModule>; ... };
+        #       # format = "myFormat";
+        #     };
+        #   };
       };
-    };
 }

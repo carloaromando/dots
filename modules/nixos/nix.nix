@@ -20,7 +20,7 @@
     registry.nixpkgs.flake = flake.inputs.nixpkgs; # Make `nix shell` etc use pinned nixpkgs
     nixPath = [
       "nixpkgs=${flake.inputs.nixpkgs}"
-      "darwin=${flake.inputs.darwin}"
+      "nix-darwin=${flake.inputs.nix-darwin}"
       "home-manager=${flake.inputs.home-manager}"
     ];
     settings = {

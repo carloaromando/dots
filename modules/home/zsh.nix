@@ -11,10 +11,11 @@
       projects = "$HOME/src/projects";
       scripts = "$HOME/src/scripts";
       hack = "$HOME/src/hack";
+      system = "$HOME/system";
     };
     shellAliases = {
-      nixactivate = "pushd $HOME/dots; nix run .#activate; popd";
-      nixup = "pushd $HOME/dots; nix run .#update; popd";
+      nixactivate = "pushd $HOME/system; nix run .#activate; popd";
+      nixup = "pushd $HOME/system; nix run .#update; popd";
       # nixup = "pushd ~/src/system-config; nix flake update; nixactivate; popd";
       nixgc = "nix store gc --debug";
       g = "${lib.getExe pkgs.git}";

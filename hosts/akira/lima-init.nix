@@ -115,7 +115,7 @@ in
   networking.nat.enable = true;
 
   environment.systemPackages = with pkgs; [
-    zsh
+    bash
     sshfs
     fuse3
     git

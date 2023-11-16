@@ -15,7 +15,7 @@
       };
 
       minimal.imports = [
-        self.nixosModules_.home-manager
+        self.nixosModules.home-manager
         self.nixosModules.home-base
         self.nixosModules.common
       ];
