@@ -26,7 +26,9 @@ let
         usermod -a -G users $LIMA_CIDATA_USER
 
         echo "fix symlink for /bin/bash"
-        ln -fs /run/current-system/sw/bin/bash /bin/bash
+        ln -fs /run/current-system/sw/bin/zsh /bin/zsh
+
+        usermod --shell /bin/zsh tecmint $LIMA_CIDATA_USER
 
         # Create authorized_keys
         LIMA_CIDATA_SSHDIR="$LIMA_CIDATA_HOMEDIR"/.ssh
@@ -113,6 +115,7 @@ in
   };
 
   networking.nat.enable = true;
+  networking.hostName = "akira";
 
   environment.systemPackages = with pkgs; [
     bash

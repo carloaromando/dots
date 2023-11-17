@@ -8,7 +8,18 @@
   # ssh
   services.openssh.enable = true;
   services.openssh.settings.PermitRootLogin = "yes";
-  users.users.root.password = "nixos";
+  users.users.root = {
+    shell = pkgs.zsh;
+    initialHashedPassword = "";
+  };
+
+  users.users.carlo = {
+    shell = pkgs.zsh;
+    isNormalUser = true;
+    group = "users";
+    extraGroups = [ "wheel" "networkmanager" ];
+    home = "/home/carlo.linux";
+  };
 
   security = {
     sudo.wheelNeedsPassword = false;
@@ -35,7 +46,6 @@
 
   # misc
   boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.kernelModules = [ "kvm-amd" "kvm-intel" ];
 
   # pkgs
   environment.systemPackages = with pkgs; [
@@ -49,19 +59,29 @@
 
   programs.zsh.enable = true;
 
-  users.users.carlo = {
-    shell = pkgs.zsh;
-    isNormalUser = true;
-    group = "users";
-    extraGroups = [
-      "qemu-libvirtd"
-      "libvirtd"
-      "wheel"
-      "disk"
-      "networkmanager"
-    ];
-    home = "/home/carlo";
+  nixpkgs = {
+    config = {
+      allowBroken = true;
+      allowUnsupportedSystem = true;
+      allowUnfree = true;
+    };
   };
 
-  system.stateVersion = "23.05";
+  nix = {
+    package = lib.mkDefault pkgs.nixUnstable;
+    settings = {
+      max-jobs = "auto";
+      experimental-features = "nix-command flakes repl-flake";
+    };
+    extraOptions = ''
+      keep-outputs = true
+      keep-derivations = true
+    '';
+    gc = {
+      automatic = pkgs.lib.mkDefault true;
+      options = pkgs.lib.mkDefault "--delete-older-than 1w";
+    };
+  };
+
+  system.stateVersion = "23.11";
 }

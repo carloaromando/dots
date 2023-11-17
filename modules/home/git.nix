@@ -1,16 +1,23 @@
 { pkgs, ... }:
+let
+  personalUserId = {
+    user = {
+      name = "carloaromando";
+      email = "carlo.aromando@gmail.com";
+    };
+  };
+in
 {
   programs.git = {
     enable = true;
     includes = [
       {
-        contents = {
-          user = {
-            name = "carloaromando";
-            email = "carlo.aromando@gmail.com";
-          };
-        };
-        condition = "gitdir:~/dots/";
+        contents = personalUserId;
+        condition = "gitdir:~/system/";
+      }
+      {
+        contents = personalUserId;
+        condition = "gitdir:~/.password-store/";
       }
       {
         contents = {
