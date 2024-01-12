@@ -4,9 +4,9 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    # nixpkgs pinned to revision: a0b3b06b7a82c965ae0bb1d59f6e386fe755001d because _coder_ is broken on the last unstable
+    # nixpkgs-old pinned to revision: a0b3b06b7a82c965ae0bb1d59f6e386fe755001d because _coder_ is broken on the last unstable
     # opened issue: https://github.com/NixOS/nixpkgs/issues/266037
-    nixpkgs-coder.url = "github:NixOS/nixpkgs/835736de35faba3e57a7a4becc6b7e472ae72317";
+    nixpkgs-old.url = "github:NixOS/nixpkgs/835736de35faba3e57a7a4becc6b7e472ae72317";
 
     nix-darwin = {
       url = "github:lnl7/nix-darwin/master";

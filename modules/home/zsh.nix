@@ -13,10 +13,6 @@
       hack = "$HOME/src/hack";
       system = "$HOME/system";
     };
-    shellAliases = {
-      tup = "${lib.getExe pkgs.tilt} -f ~cubbit/coordinator/Tiltfile up";
-      tdown = "${lib.getExe pkgs.tilt} -f ~cubbit/coordinator/Tiltfile down";
-    };
     plugins = [
       {
         name = "zsh-autocomplete";

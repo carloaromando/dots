@@ -1,5 +1,5 @@
-{ coder, ... }:
+{ nixpkgs-old, ... }:
 
 final: prev: {
-  coder = coder;
+  coder = nixpkgs-old.legacyPackages.${prev.system}.coder;
 }

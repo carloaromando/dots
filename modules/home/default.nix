@@ -25,7 +25,6 @@
           self.homeModules.base
           ./pkgs.nix
           ./pass.nix
-          ./vscode.nix
           ./emacs
         ];
 

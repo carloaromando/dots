@@ -36,11 +36,9 @@
     go
 
     ## misc
-    # odin-cli
-    act
     awscli2
-    # coder
     minio-client
+    coder
 
     # virtualization
     qemu
@@ -60,5 +58,6 @@
     # broken
     ## handbrake
     ## goofys
+    ## odin-cli
   ];
 }

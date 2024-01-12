@@ -172,7 +172,7 @@
         "type": "github"
       }
     },
-    "nixpkgs-coder": {
+    "nixpkgs-old": {
       "locked": {
         "lastModified": 1695103091,
         "narHash": "sha256-V1tBiAvGVn71/n6JZG7U5yTykQlm7Os/3SbapfuKx68=",
@@ -229,7 +229,7 @@
         "nix-darwin": "nix-darwin",
         "nixos-flake": "nixos-flake",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-coder": "nixpkgs-coder",
+        "nixpkgs-old": "nixpkgs-old",
         "odin-cli": "odin-cli"
       }
     },
