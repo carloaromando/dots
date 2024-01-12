@@ -8,14 +8,10 @@
         hostname = "github.com";
         identityFile = "~/.ssh/id_personal_ed25519";
       };
-      "yocto-vm" = {
-        user = "yocto";
+      "akira" = {
+        user = "carlo";
         hostname = "localhost";
-        port = 22022;
-      };
-      "cubbit-cell" = {
-        user = "root";
-        hostname = "192.168.1.108";
+        port = 50022;
       };
       "cubbit-bh" = {
         hostname = "bh.cubbit.eu";

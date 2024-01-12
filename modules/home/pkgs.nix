@@ -11,21 +11,35 @@
     kcat
 
     # programming
+
+    ## ninja
+    ninja
+
+    ## nix 
     nil
     nixpkgs-fmt
-    ninja
+
+    ## python
     python3
     poetry
     pylint
     black
+
+    ## js
     nodejs
     yarn
+
+    ## shell
     shellcheck
-    odin-cli
+
+    ## go
+    go
+
+    ## misc
+    # odin-cli
     act
     awscli2
-    go
-    coder
+    # coder
     minio-client
 
     # virtualization
@@ -36,6 +50,7 @@
     docker
     kubernetes-helm
     kubectl
+    kubectx
     k9s
 
     # media

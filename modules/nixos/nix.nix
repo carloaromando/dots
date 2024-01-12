@@ -10,8 +10,8 @@
       flake.inputs.nil.overlays.default
       flake.inputs.emacs-overlay.overlays.default
       (import ../../overlays/bazelisk.nix)
-      (import ../../overlays/odin-cli.nix { inherit (flake.inputs) odin-cli; })
-      # (import ../../overlays/coder.nix)
+      # (import ../../overlays/odin-cli.nix { inherit (flake.inputs) odin-cli; })
+      # (import ../../overlays/coder.nix { inherit (flake.inputs.nixpkgs-coder.pkgs) coder; })
     ];
   };
 

@@ -14,20 +14,8 @@
       system = "$HOME/system";
     };
     shellAliases = {
-      nixactivate = "pushd $HOME/system; nix run .#activate; popd";
-      nixup = "pushd $HOME/system; nix run .#update; popd";
-      # nixup = "pushd ~/src/system-config; nix flake update; nixactivate; popd";
-      nixgc = "nix store gc --debug";
-      g = "${lib.getExe pkgs.git}";
-      ls = "${lib.getExe pkgs.eza}";
-      l = "ls";
-      ll = "ls -la --group-directories-first";
-      llt = "ll --tree";
-      lt = "ls --tree";
-      clr = "clear";
       tup = "${lib.getExe pkgs.tilt} -f ~cubbit/coordinator/Tiltfile up";
       tdown = "${lib.getExe pkgs.tilt} -f ~cubbit/coordinator/Tiltfile down";
-      rgf = "${lib.getExe pkgs.ripgrep} --files | ${lib.getExe pkgs.ripgrep}";
     };
     plugins = [
       {
@@ -38,16 +26,6 @@
           repo = "zsh-autocomplete";
           rev = "d00142dd752c15aaa775d79c61ff0611acf20bad";
           sha256 = "sha256-0yzqbX39hqsE2mAXFY3uoK5zrcm0uZmsTr+dB8keFIs=";
-        };
-      }
-      {
-        name = "zsh-nix-shell";
-        file = "nix-shell.plugin.zsh";
-        src = pkgs.fetchFromGitHub {
-          owner = "chisui";
-          repo = "zsh-nix-shell";
-          rev = "v0.5.0";
-          sha256 = "0za4aiwwrlawnia4f29msk822rj9bgcygw6a8a6iikiwzjjz0g91";
         };
       }
       {
@@ -77,6 +55,7 @@
     initExtra = ''
       MNML_INFOLN=()
       MNML_MAGICENTER=()
+      MNML_PROMPT=(mnml_status)
       MNML_RPROMPT=(nix_shell_prompt hostname_prompt $MNML_RPROMPT);
 
       bindkey "^[[3~" delete-char

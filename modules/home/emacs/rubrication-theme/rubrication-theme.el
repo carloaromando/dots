@@ -5,6 +5,7 @@
       (fg-table "#222291")
       (bg "#ffffff")
       (bg-light "#ddddd8")
+      (fg-modeline "#eeeeee")
       (bg-modeline "#2c2c2c")
       (fg-light "#ddddd8")
       (bg-highlight "#add6ff")
@@ -22,7 +23,8 @@
    `(default-italic ((t (:italic t))))
 
    `(font-lock-builtin-face ((t (:background ,bg :foreground ,fg))))
-   `(font-lock-comment-face ((t (:foreground "#770000" :slant italic))))
+   `(font-lock-comment-face ((t (:foreground "#cc0000"))))
+   `(font-lock-doc-face ((t (:foreground ,fg :weight bold :slant italic))))
    `(font-lock-constant-face ((t (:foreground ,fg))))
    `(font-lock-doc-face ((t (:foreground ,fg :weight semi-bold))))
    `(font-lock-function-name-face ((t (:foreground ,fg))))
@@ -51,13 +53,15 @@
    `(link ((t (:foreground ,fg))))
    
    `(minibuffer-prompt ((t (:foreground ,fg :weight bold))))
-   
-   `(mode-line ((t (:background ,bg-modeline :foreground "#eeeeee" :height 0.9))))
-   `(mode-line-buffer ((t (:foreground ,fg :weight bold))))
+
+   ;; mode line
+   `(mode-line ((t (:background ,bg-modeline :foreground ,fg-modeline :height 0.9))))
+   `(mode-line-buffer ((t (:foreground ,fg-modeline :weight bold))))
    `(mode-line-inactive ((t (:background ,bg-modeline :foreground ,bg-modeline :height 0.9))))
    `(mode-line-minor-mode ((t (:weight ultra-light))))
-   `(modeline ((t (:background ,bg-modeline :foreground "#eeeeee" :height 0.9))))
+   `(modeline ((t (:background ,bg-modeline :foreground ,fg-modeline :height 0.9))))
    `(region ((t (:background ,bg-highlight :foreground ,fg))))
+   `(eglot-mode-line ((t (:foreground ,fg-modeline))))
    
    `(slime-repl-inputed-output-face ((t (:foreground ,fg))))
    
@@ -140,6 +144,7 @@
    `(company-tooltip ((t (:background "#eaeaea" :foreground "black"))))
    `(company-scrollbar-bg ((t :background "#eaeaea")))
    `(company-tooltip-search-selection ((t (:inherit highlight))))
+   `(company-tooltip-scrollbar-track ((t :background "#eaeaea")))
    `(company-tooltip-selection ((t (:background "#dadada"))))
    
    ;; parens - parenface

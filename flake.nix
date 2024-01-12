@@ -2,9 +2,11 @@
   description = "Carlo's nix system";
 
   inputs = {
-    # nixpkgs pinned to revision: a0b3b06b7a82c965ae0bb1d59f6e386fe755001d because coder is broken on the last unstable
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+    # nixpkgs pinned to revision: a0b3b06b7a82c965ae0bb1d59f6e386fe755001d because _coder_ is broken on the last unstable
     # opened issue: https://github.com/NixOS/nixpkgs/issues/266037
-    nixpkgs.url = "github:NixOS/nixpkgs/835736de35faba3e57a7a4becc6b7e472ae72317";
+    nixpkgs-coder.url = "github:NixOS/nixpkgs/835736de35faba3e57a7a4becc6b7e472ae72317";
 
     nix-darwin = {
       url = "github:lnl7/nix-darwin/master";
@@ -22,11 +24,6 @@
     };
 
     nixos-flake.url = "github:srid/nixos-flake";
-
-    nixos-generators = {
-      url = "github:nix-community/nixos-generators";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     nil = {
       url = "github:oxalica/nil";
@@ -54,8 +51,25 @@
           ./modules/nixos
           ./modules/home
           ./modules/darwin
-          ./pkgs
         ];
+
+        perSystem = { pkgs, ... }:
+          let
+            username = "carlo";
+          in
+          {
+            legacyPackages.homeConfigurations.${username} =
+              self.nixos-flake.lib.mkHomeConfiguration
+                pkgs
+                ({ pkgs, ... }: {
+                  imports = [
+                    self.homeModules.base
+                  ];
+                  home.username = username;
+                  home.homeDirectory = "/home/${username}.linux";
+                  home.stateVersion = "24.05";
+                });
+          };
 
         flake = {
           darwinConfigurations = {
