@@ -27,9 +27,13 @@ in
     enable = true;
     caskArgs.no_quarantine = true;
     onActivation.autoUpdate = false; # Change this when want to update brews
+    brews = [
+      "handbrake"
+    ];
     casks = [
       "iina"
       "dmenu-mac"
+      "vlc"
     ];
   };
 
