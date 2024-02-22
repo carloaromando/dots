@@ -8,7 +8,7 @@
         hostname = "github.com";
         identityFile = "~/.ssh/id_personal_ed25519";
       };
-      "akira" = {
+      "cthell" = {
         user = "carlo";
         hostname = "localhost";
         port = 50022;

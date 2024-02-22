@@ -3,7 +3,8 @@
 
 (let ((fg "#111111")
       (fg-table "#222291")
-      (bg "#ffffff")
+      ;;(bg "#ffffff")
+      (bg "#f5f4ed")
       (bg-light "#ddddd8")
       (fg-modeline "#eeeeee")
       (bg-modeline "#2c2c2c")
@@ -116,9 +117,9 @@
    `(compilation-error ((t (:inherit error))))
 
    ;; flycheck
-   `(flycheck-error ((t (:inherit error))))
-   `(flycheck-warning ((t (:inherit warning))))
-
+   `(flycheck-error ((t (:foreground ,fg :underline (:color "red2" :style wave :position nil) :weight normal))))
+   `(flycheck-warning ((t (:foreground ,fg :underline (:color "orange" :style wave :position nil) :weight normal))))
+   
    ;; dired
    `(dired-directory ((t (:weight bold))))
    `(dired-subtree-depth-1-face ((t (:inherit default))))
@@ -145,6 +146,7 @@
    `(company-scrollbar-bg ((t :background "#eaeaea")))
    `(company-tooltip-search-selection ((t (:inherit highlight))))
    `(company-tooltip-scrollbar-track ((t :background "#eaeaea")))
+   `(company-tooltip-scrollbar-thumb ((t :background "black")))
    `(company-tooltip-selection ((t (:background "#dadada"))))
    
    ;; parens - parenface

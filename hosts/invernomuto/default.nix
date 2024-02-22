@@ -23,6 +23,8 @@ in
     home = "/Users/${username}";
   };
 
+  networking.hostName = "invernomuto";
+
   homebrew = {
     enable = true;
     caskArgs.no_quarantine = true;
@@ -34,6 +36,7 @@ in
       "iina"
       "dmenu-mac"
       "vlc"
+      # "utm"
     ];
   };
 

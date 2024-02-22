@@ -2,13 +2,14 @@
 {
   home.packages = with pkgs; [
     # shell
-    pinentry_mac
+    pinentry_mac # TODO move to macos only file
     pv
     entr
     shell2http
     coreutils-prefixed
     websocat
     kcat
+    rlwrap
 
     # programming
 
@@ -42,7 +43,7 @@
 
     # virtualization
     qemu
-    lima
+    # utm [Permission denied error when starting a new VM] 
 
     # container
     docker
@@ -54,10 +55,5 @@
     # media
     ffmpeg_5
     yt-dlp
-
-    # broken
-    ## handbrake
-    ## goofys
-    ## odin-cli
   ];
 }

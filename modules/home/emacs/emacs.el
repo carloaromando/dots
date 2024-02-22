@@ -53,8 +53,8 @@
 (setq default-tab-width 4)
 (setq-default c-basic-offset 4)
 
-(add-to-list 'default-frame-alist '(width  . 180))
-(add-to-list 'default-frame-alist '(height . 70))
+(add-to-list 'default-frame-alist '(width  . 140))
+(add-to-list 'default-frame-alist '(height . 80))
 
 (setq vc-follow-symlinks t)
 
@@ -62,10 +62,10 @@
 (setq scroll-preserve-screen-position 'always) ;; Don't work. Fix
 
 ;; Don't create new frame but yse the existing one
-(define-advice make-frame (:around (fn &rest args) suppress)
-  "Suppress making new frame; return existing frame."
-  (message "make-frame suppressed; proceed at your own peril.")
-  (selected-frame))
+;; (define-advice make-frame (:around (fn &rest args) suppress)
+;;   "Suppress making new frame; return existing frame."
+;;   (message "make-frame suppressed; proceed at your own peril.")
+;;   (selected-frame))
 
 ;; Ediff use single frame
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
@@ -155,7 +155,8 @@
   (define-key company-active-map (kbd "<tab>") 'company-complete)
   (setq company-minimum-prefix-length 2
         company-idle-delay 0.1
-        company-flx-limit 10))
+        company-flx-limit 10
+	company-format-margin-function nil))
 
 ;; Flycheck
 (use-package flycheck
@@ -216,11 +217,6 @@
               (unless (file-remote-p default-directory)
                 (auto-revert-mode))))
   :config
-  (defun sidebar-toggle ()
-    "Toggle both `dired-sidebar' and `ibuffer-sidebar'."
-    (interactive)
-    (ibuffer-sidebar-toggle-sidebar)
-    (dired-sidebar-toggle-sidebar))
   (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
   (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
   (setq dired-sidebar-subtree-line-prefix "__")
@@ -292,34 +288,6 @@
       (setq eshell-path-env (getenv "PATH")))
     (advice-add 'direnv-update-directory-environment
                 :after #'direnv-update-directory-environment--eshell)))
-
-     ;; Enable direnv on tramp
-;;   (defcustom my-direnv-enabled-hosts nil
-;;     "List of remote hosts to use Direnv on.
-
-;; Each host must have `direnv' executable accessible in the default
-;; environment."
-;;     :type '(repeat string)
-;;     :group 'my)
-
-;;   (defun tramp-sh-handle-start-file-process@my-direnv (args)
-;;     "Enable Direnv for hosts in `my-direnv-enabled-hosts'."
-;;     (with-parsed-tramp-file-name (expand-file-name default-directory) nil
-;;       (if (member host my-direnv-enabled-hosts)
-;;           (pcase-let ((`(,name ,buffer ,program . ,args) args))
-;;             `(,name
-;;               ,buffer
-;;               "direnv"
-;;               "exec"
-;;               ,localname
-;;               ,program
-;;               ,@args))
-;;      args)))
-
-;;   (with-eval-after-load "tramp-sh"
-;;     (advice-add 'tramp-sh-handle-start-file-process
-;;              :filter-args #'tramp-sh-handle-start-file-process@my-direnv))
-  
 
 ;; Bazel
 (use-package bazel
@@ -459,7 +427,7 @@
 (global-set-key (kbd "C-M-o") 'projectile-find-file)
 (global-set-key (kbd "M-s") 'magit-status)
 (global-set-key (kbd "C-x C-n") 'dired-sidebar-toggle-sidebar)
-(global-set-key (kbd "C-x C-m") 'sidebar-toggle)
+(global-set-key (kbd "C-x C-m") 'ibuffer-sidebar-toggle-sidebar)
 (global-set-key (kbd "C-x C-M-n") 'dired-sidebar-jump-to-sidebar)
 (global-set-key (kbd "<escape>") 'god-mode-all)
 
@@ -486,7 +454,7 @@
 
 ;; Set Font
 (set-face-attribute 'default nil
-                    :family "JetBrains Mono"
+                    :family "JetBrains Mono NL"
                     :height 120
                     :weight 'medium)
 

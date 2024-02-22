@@ -7,11 +7,9 @@
       allowUnfree = true;
     };
     overlays = [
-      flake.inputs.nil.overlays.default
       flake.inputs.emacs-overlay.overlays.default
       (import ../../overlays/bazelisk.nix)
       (import ../../overlays/coder.nix { inherit (flake.inputs) nixpkgs-old; })
-      # (import ../../overlays/odin-cli.nix { inherit (flake.inputs) odin-cli; })
     ];
   };
 

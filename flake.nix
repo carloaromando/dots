@@ -1,5 +1,5 @@
 {
-  description = "Carlo's nix system";
+  description = "Carlo's Nix systems";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -25,19 +25,9 @@
 
     nixos-flake.url = "github:srid/nixos-flake";
 
-    nil = {
-      url = "github:oxalica/nil";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     emacs-overlay = {
       url = "github:nix-community/emacs-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    odin-cli = {
-      url = "git+ssh://git@github.com/cubbit/odin-cli";
-      flake = false;
     };
   };
 
@@ -53,32 +43,28 @@
           ./modules/darwin
         ];
 
-        perSystem = { pkgs, ... }:
-          let
-            username = "carlo";
-          in
-          {
-            legacyPackages.homeConfigurations.${username} =
-              self.nixos-flake.lib.mkHomeConfiguration
-                pkgs
-                ({ pkgs, ... }: {
-                  imports = [
-                    self.homeModules.base
-                  ];
-                  home.username = username;
-                  home.homeDirectory = "/home/${username}.linux";
-                  home.stateVersion = "24.05";
-                });
-          };
-
         flake = {
+          # Configurations for macOS machines
           darwinConfigurations = {
             invernomuto = self.nixos-flake.lib.mkMacosSystem {
               nixpkgs.hostPlatform = "x86_64-darwin";
 
               imports = [
-                self.darwinModules.default # Defined in modules/darwin/default.nix
+                self.darwinModules.default
                 ./hosts/invernomuto
+              ];
+            };
+          };
+
+          # Configurations for NixOS systems
+          nixosConfigurations = {
+            # UTM macOS VM
+            cthell = self.nixos-flake.lib.mkLinuxSystem {
+              nixpkgs.hostPlatform = "x86_64-linux";
+
+              imports = [
+                self.nixosModules.minimal
+                ./hosts/cthell
               ];
             };
           };
