@@ -7,6 +7,7 @@
         home-manager.users.carlo = { pkgs, ... }: {
           imports = [
             self.homeModules.default
+            self.inputs.mac-app-util.homeManagerModules.default
           ];
         };
       };

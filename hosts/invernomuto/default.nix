@@ -32,14 +32,9 @@ in
     brews = [
       "handbrake"
     ];
-    casks = [
-      "iina"
-      "vlc"
-      # "utm"
-    ];
   };
 
-  services.dmenu.enable = true;
+  services.dmenu.enable = false;
   services.nfs.server = {
     enable = true;
     exports = ''

@@ -55,5 +55,10 @@
     # media
     ffmpeg_5
     yt-dlp
-  ];
+  ] ++ (with nixcasks; [
+    iina
+    vlc
+    alfred
+    # utm
+  ]);
 }

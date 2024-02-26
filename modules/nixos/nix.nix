@@ -5,6 +5,13 @@
       allowBroken = true;
       allowUnsupportedSystem = true;
       allowUnfree = true;
+      packageOverrides = _: {
+        nixcasks = import flake.inputs.nixcasks {
+          inherit (flake.inputs) nixpkgs;
+          pkgs = pkgs;
+          osVersion = "monterey";
+        };
+      };
     };
     overlays = [
       flake.inputs.emacs-overlay.overlays.default

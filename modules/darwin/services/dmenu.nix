@@ -20,10 +20,10 @@ in
 
 
   config = mkIf cfg.enable {
-    homebrew.casks = [ "dmenu-mac" ];
+    environment.systemPackages = with pkgs.nixcasks; [ dmenu-mac ];
 
     launchd.user.agents.dmenu = {
-      serviceConfig.ProgramArguments = [ "/usr/local/bin/dmenu-mac" ];
+      serviceConfig.ProgramArguments = [ "${pkgs.nixcasks.dmenu-mac}/bin/dmenu-mac" ];
       serviceConfig.KeepAlive = true;
       serviceConfig.RunAtLoad = true;
     };
