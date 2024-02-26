@@ -34,24 +34,31 @@ in
     ];
     casks = [
       "iina"
-      "dmenu-mac"
       "vlc"
       # "utm"
     ];
   };
 
-  # Not working
-  launchd.user.agents.dmenu = {
-    command = "/usr/local/bin/dmenu-mac";
-    serviceConfig = {
-      StandardErrorPath = "/tmp/dmenu.log";
-      StandardOutPath = "/tmp/dmenu.log";
-      RunAtLoad = true;
-    };
+  services.dmenu.enable = true;
+  services.nfs.server = {
+    enable = true;
+    exports = ''
+      /System/Volumes/Data -ro -alldirs 192.168.64.3
+    '';
   };
 
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
 
+  system.activationScripts.postUserActivation.text = ''
+    # Following line should allow us to avoid a logout/login cycle
+    /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+  '';
+
+  nix.linux-builder.enable = true;
+
   system.stateVersion = 4;
 }
+
+
+

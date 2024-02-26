@@ -21,8 +21,8 @@
   };
 
   home.shellAliases = {
-    nixactivate = "pushd $HOME/src/system; nix run .#activate; popd";
-    nixup = "pushd $HOME/src/system; nix run .#update; popd";
+    nixactivate = "pushd $HOME/src/systems; nix run .#activate; popd";
+    nixup = "pushd $HOME/src/systems; nix run .#update; popd";
     nixgc = "nix store gc --debug";
     g = "${pkgs.lib.getExe pkgs.git}";
     ls = "${pkgs.lib.getExe pkgs.eza}";

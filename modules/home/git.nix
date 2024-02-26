@@ -13,7 +13,7 @@ in
     includes = [
       {
         contents = personalUserId;
-        condition = "gitdir:~/system/";
+        condition = "gitdir:~/src/systems/";
       }
       {
         contents = personalUserId;

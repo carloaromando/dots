@@ -2,7 +2,7 @@
   description = "Carlo's Nix systems";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     # nixpkgs-old pinned to revision: a0b3b06b7a82c965ae0bb1d59f6e386fe755001d because _coder_ is broken on the last unstable
     # opened issue: https://github.com/NixOS/nixpkgs/issues/266037
@@ -52,6 +52,8 @@
               imports = [
                 self.darwinModules.default
                 ./hosts/invernomuto
+                ./modules/darwin/services/nfsd.nix
+                ./modules/darwin/services/dmenu.nix
               ];
             };
           };

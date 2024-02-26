@@ -11,7 +11,7 @@
       projects = "$HOME/src/projects";
       scripts = "$HOME/src/scripts";
       hack = "$HOME/src/hack";
-      system = "$HOME/src/system";
+      systems = "$HOME/src/systems";
     };
     plugins = [
       {
