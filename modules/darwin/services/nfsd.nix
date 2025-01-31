@@ -10,13 +10,7 @@ in
   options = {
     services.nfs = {
       server = {
-        enable = mkOption {
-          type = types.bool;
-          default = false;
-          description = mdDoc ''
-            Whether to enable the NFS server.
-          '';
-        };
+        enable = mkEnableOption "Whether to enable the NFS server.";
 
         exports = mkOption {
           type = types.lines;
@@ -31,11 +25,12 @@ in
   };
 
   config = mkIf cfg.enable {
+    environment.etc.exports.source = exports;
+
     launchd.daemons.nfsdstart = {
       script = "nfsd enable && nfsd start";
       serviceConfig.RunAtLoad = true;
       serviceConfig.KeepAlive.SuccessfulExit = false;
     };
-    environment.etc.exports.source = exports;
   };
 }

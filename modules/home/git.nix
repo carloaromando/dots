@@ -61,4 +61,8 @@ in
       ".DS_Store"
     ];
   };
+
+  home.packages = with pkgs; [
+    git-lfs
+  ];
 }

@@ -1,14 +1,14 @@
 (deftheme rubrication
   "Rubrication design inspired theme.")
 
-(let ((fg "#111111")
+(let ((fg "#000000")
       (fg-table "#222291")
       ;;(bg "#ffffff")
       (bg "#f5f4ed")
       (bg-light "#ddddd8")
       (fg-modeline "#eeeeee")
       (bg-modeline "#2c2c2c")
-      (fg-light "#ddddd8")
+      (fg-light "DimGray")
       (bg-highlight "#add6ff")
       (bg-highlight-2 "#deeeff")
       (bg-highlight-3 "LightGreen"))
@@ -77,6 +77,7 @@
    `(org-block ((t (:foreground ,fg))))
    `(org-block-begin-line ((t (:foreground ,fg-light :height 0.8))))
    `(org-block-end-line ((t (:foreground ,fg-light :height 0.8))))
+   `(org-meta-line ((t (:inherit default :foreground ,fg-light :height 0.8))))
    `(org-verbatim ((t (:foreground ,fg :weight semi-bold))))
    `(org-date ((t (:foreground ,fg) :underline)))
    `(org-done ((t (:foreground ,fg-light))))
@@ -94,7 +95,8 @@
    `(org-special-keyword ((t (:foreground ,fg))))
    `(org-todo ((t (:foreground ,fg))))
    `(org-verse ((t (:inherit org-block :slant italic))))
-   `(org-table ((t (:foreground ,fg-table))))
+   `(org-table ((t (:inherit default :foreground ,fg))))
+   `(ivy-org ((t (:inherit default))))
 
    ;; magit
    `(magit-section-highlight ((t (:background "#eaeaea"))))
@@ -154,7 +156,7 @@
    '(parenface-curly-face ((t (:foreground "blue"))))
    '(parenface-bracket-face ((t (:foreground "blue"))))
 
-   ;; parens - paren-face
+   ;; parens - parenface
    '(parenthesis ((t (:foreground "blue"))))
 
    ;; parens - other
@@ -163,7 +165,7 @@
    `(show-paren-match ((t (:foreground "black" :weight bold))))
    `(show-paren-mismatch ((t (:background "red" :foreground "black" :weight bold))))
 
-   ;; rpm-spec-mode
+   ;; rpm-spec
    `(rpm-spec-tag-face ((t (:inherit default))))
    `(rpm-spec-package-face ((t (:inherit default))))
    `(rpm-spec-macro-face ((t (:inherit default))))
@@ -175,9 +177,20 @@
    ;; linum
    `(linum ((t (:foreground ,fg :weight bold))))
 
-   ;; web-mode
+   ;; web
    `(web-mode-current-element-highlight-face ((t (:inherit normal :weight bold :foreground ,fg))))
 
+   ;; lsp
+   `(lsp-ui-doc-background ((t (:background "#eaeaea"))))
+   `(lsp-headerline-breadcrumb-path-error-face ((t (:style nil))))
+   `(lsp-headerline-breadcrumb-path-hint-face ((t (:style nil))))
+   `(lsp-headerline-breadcrumb-path-info-face ((t (:style nil))))
+   `(lsp-headerline-breadcrumb-path-warning-face ((t (:style nil))))
+   `(lsp-headerline-breadcrumb-symbols-error-face ((t (:style nil))))
+   `(lsp-headerline-breadcrumb-symbols-hint-face ((t (:style nil))))
+   `(lsp-headerline-breadcrumb-symbols-info-face ((t (:style nil))))
+   `(lsp-headerline-breadcrumb-symbols-warning-face ((t (:style nil))))
+   
    ;; misc
    `(yas-field-highlight-face ((t (:underline t :background ,bg-highlight :foreground ,fg))))
    `(eshell-prompt ((t (:foreground ,fg :weight bold))))

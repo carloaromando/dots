@@ -1,5 +1,5 @@
 ;; Emacs config
-
+ 
 ;; Remove GUI widgets
 (menu-bar-mode -1)
 (toggle-scroll-bar -1)
@@ -61,12 +61,6 @@
 ;; Preserve cursor position when scrolling
 (setq scroll-preserve-screen-position 'always) ;; Don't work. Fix
 
-;; Don't create new frame but yse the existing one
-;; (define-advice make-frame (:around (fn &rest args) suppress)
-;;   "Suppress making new frame; return existing frame."
-;;   (message "make-frame suppressed; proceed at your own peril.")
-;;   (selected-frame))
-
 ;; Ediff use single frame
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 
@@ -86,9 +80,17 @@
 
 ;; Theme
 (use-package rubrication-theme
-  :load-path "@rubricationThemePath@"
+  :load-path "@rubricationThemePath@" ;; injected by nix home-manager
   :config
   (load-theme 'rubrication t))
+
+;; Compilation Mode
+(use-package compile
+  :ensure nil
+  :custom
+  (compilation-scroll-output t)
+  (compilation-auto-jump-to-first-error t)
+  (compilation-max-output-line-length nil))
 
 ;; Dired
 (use-package dired
@@ -97,15 +99,14 @@
   (setq dired-recursive-copies 'always)
   (setq dired-recursive-deletes 'always)
   (setq delete-by-moving-to-trash t)
-  (setq insert-directory-program "/etc/profiles/per-user/carlo/bin/gls")
+  (setq insert-directory-program "/etc/profiles/per-user/carlo/bin/gls") ;; gnu ls need to be installed with home-manager
   (setq dired-listing-switches
         "-al --group-directories-first --time-style=long-iso")
   (setq dired-make-directory-clickable t)
   (setq dired-free-space nil)
   (setq dired-mouse-drag-files t)
-  :config
-  (add-hook 'dired-mode-hook #'dired-hide-details-mode)
-  (add-hook 'dired-mode-hook #'hl-line-mode))
+  :hook ((dired-mode . dired-hide-details-mode)
+	 (dired-mode . hl-line-mode)))
 
 ;; Dired subtree
 (use-package dired-subtree
@@ -130,7 +131,6 @@
 
 ;; Proced
 (use-package proced
-  :ensure nil
   :config
   (setq proced-tree-flag t)
   (setq proced-format-alist
@@ -165,26 +165,39 @@
   :config
   (flycheck-add-mode 'bazel-build-buildifier 'bazel-build-mode))
 
-;; Advanced minibuffer completion
-(use-package counsel
+;; Ivy: Advanced minibuffer completion
+(use-package ivy
+  :demand
   :config
-  ;; Simple minibuffer completion M-x
-  (use-package smex
-    :init (smex-initialize))
-  (use-package flx)
   (ivy-mode 1)
   (setq ivy-use-virtual-buffers t)
-  ;; intentional space before end of string
   (setq ivy-count-format "(%d/%d) ")
   (setq ivy-initial-inputs-alist nil)
   (setq ivy-use-selectable-prompt t)
   (setq ivy-re-builders-alist
-        '((t . ivy--regex-fuzzy))))
+        '((t . ivy--regex-fuzzy)))
+  (define-key ivy-minibuffer-map (kbd "TAB") #'ivy-partial)
+  (define-key ivy-minibuffer-map (kbd "RET") #'ivy-alt-done))
+
+(use-package counsel
+  :after ivy)
+
+(use-package flx
+  :after counsel)
+
+(use-package smex
+  :after counsel
+  :init (smex-initialize))
 
 ;; Magit
 (use-package magit
   :custom
   (magit-git-executable "/etc/profiles/per-user/carlo/bin/git"))
+
+;; Diff Highlight
+(use-package diff-hl
+  :hook
+  (magit-post-refresh-hook . diff-hl-magit-post-refresh))
 
 ;; God mode
 (use-package god-mode
@@ -231,7 +244,8 @@
   :config
   (define-key projectile-mode-map (kbd "C-x C-p") 'projectile-command-map)
   (projectile-mode 1)
-  (setq projectile-completion-system 'ivy))
+  (setq projectile-completion-system 'ivy)
+  (setq projectile-indexing-method 'alien))
 
 ;; Dashboard
 (use-package dashboard
@@ -242,7 +256,7 @@
         (recents . 5))))
   (dashboard-setup-startup-hook))
 
-;; Rg
+;; Rg ----> use projectile-ripgrep
 (use-package rg
   :init
   (rg-enable-default-bindings)
@@ -252,15 +266,67 @@
 
 ;; LSP
 (use-package lsp-mode
+  :hook
+  ((c-mode c++-mode) . lsp)
+  ;; ((c-mode c++-mode) . (lambda () (add-hook 'before-save-hook (lambda () (lsp-format-buffer)))))
+  (lsp-mode . lsp-enable-which-key-integration)
+  :config
+  (setq gc-cons-threshold (* 100 1024 1024)
+      read-process-output-max (* 1024 1024)
+      company-idle-delay 0.0
+      company-minimum-prefix-length 1)
+  :custom
+  (lsp-clients-clangd-args '("-j=8"
+                             "--background-index"
+			     "--header-insertion=never"
+			     "--compile-commands-dir=/Users/carlo/src/work/cubbit/" ;; find a way to use projectile root folder
+			     "--query-driver=/**/*"
+			     "--clang-tidy=true"))
+  (lsp-enable-on-type-formatting nil)
+  (lsp-idle-delay 0.1)
   :commands lsp)
+
+(use-package lsp-ui
+  :custom
+  (lsp-ui-doc-enable t)
+  (lsp-ui-flycheck-enable t)
+  (lsp-ui-peek-enable t)
+  :commands lsp-ui-mode
+  :config
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
+
+;; Clang-Format
+(use-package clang-format
+  :config
+  (defun clang-format-save-hook ()
+    (clang-format-buffer)
+    nil)
+
+  (define-minor-mode clang-format-on-save-mode
+    "Buffer-local mode to enable/disable automated clang format on save"
+    :lighter " ClangFormat"
+    (if clang-format-on-save-mode
+	(add-hook 'before-save-hook 'clang-format-save-hook nil t)
+      (remove-hook 'before-save-hook 'clang-format-save-hook t)))
+
+  (define-globalized-minor-mode clang-format-auto-enable-mode clang-format-on-save-mode
+    (lambda () (clang-format-on-save-mode t))
+    :predicate '(c-mode c++-mode c-or-c++-mode))
+  
+  (clang-format-auto-enable-mode t))
+
+;; Which Key
+(use-package which-key
+  :init
+  (which-key-mode))
 
 ;; Nix
 (use-package nix-mode
   :mode "\\.nix\\'")
 
 (use-package nixpkgs-fmt
-  :init
-  (add-hook 'nix-mode-hook 'nixpkgs-fmt-on-save-mode))
+  :hook
+  (nix-mode . nixpkgs-fmt-on-save-mode))
 
 ;; Direnv
 (use-package direnv
@@ -298,30 +364,28 @@
   :custom
   (bazel-buildifier-before-save t))
 
-;; Clang-Format
-(use-package clang-format
-  :config
-  (defun clang-format-save-hook()
-    "Create a buffer local save hook to apply `clang-format-buffer'"
-    (clang-format-buffer)
-    nil)
-
-  (define-minor-mode clang-format-on-save-mode
-    "Buffer-local mode to enable/disable automated clang format on save"
-    :lighter " ClangFormat"
-    (if clang-format-on-save-mode
-        (add-hook 'before-save-hook 'clang-format-save-hook nil t)
-      (remove-hook 'before-save-hook 'clang-format-save-hook t)))
-
-  (define-globalized-minor-mode clang-format-auto-enable-mode clang-format-on-save-mode
-    (lambda()(clang-format-on-save-mode t))
-    :predicate '(c-mode c++-mode c-or-c++-mode))
-  (clang-format-auto-enable-mode t))
-
 ;; Markdown
 (use-package markdown-mode
   :mode (("\\.md\\'" . markdown-mode)
          ("\\.mdx\\'" . markdown-mode)))
+
+;; Org
+(use-package org
+  :ensure nil)
+
+(use-package ob
+  :ensure nil
+  :after org
+  :config
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (python . t)
+     (clojure . t)
+     (lisp . t)))
+  :custom
+  (org-export-use-babel nil)
+  (org-confirm-babel-evaluate nil))
 
 ;; Slime
 (use-package slime
@@ -358,23 +422,19 @@
    (lisp-interaction-mode . paredit-mode)
    (lisp-mode . paredit-mode)))
 
-;; Eglot
-(use-package eglot
-  :disabled t
-  :config
-  (add-to-list 'eglot-server-programs '((c-mode c++-mode) . ("clangd"
-                                                             "--query-driver=**"
-                                                             "--background-index"
-                                                             "-j=8"
-                                                             "--header-insertion=never"
-                                                             "--pch-storage=memory"
-                                                             "--clang-tidy=false")))
+;; Typescript
+(use-package typescript-mode
+  :mode
+  (("\\.ts\\'" . typescript-mode)))
 
-  (when (require 'flycheck nil 'noerror)
-    (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-gcc)))
-  
-  :hook ((c-mode . eglot-ensure)
-         (c++-mode . eglot-ensure)))
+;; Pass
+(use-package password-store)
+
+;; Chat-GPT
+(use-package chatgpt-shell
+  :custom
+  ((chatgpt-shell-openai-key (lambda ()
+			       "")))) ; TODO use pass
 
 ;; Generic hooks
 (add-hook 'c-or-c++-mode (lambda () (electric-pair-mode +1)))
@@ -382,14 +442,13 @@
 ;; ------------------------- ;;
 ;;    CUSTOM KEYBINDINGS     ;;
 ;; ------------------------- ;;
+;;
+;; TODO: move specific mode keybindings in use-package declarations
 
 (defun goto-init-file ()
   "Edit the `user-init-file', in another window."
   (interactive)
-  (find-file-at-point "~/system/modules/home/emacs/emacs.el"))
-
-(fset 'duplicate-line
-    [?\C-a ?\C-  ?\C-n ?\M-w ?\C-y])
+  (find-file-at-point "~/src/systems/modules/home/emacs/emacs.el"))
 
 (windmove-default-keybindings 'meta)
 
@@ -409,7 +468,7 @@
 (global-set-key (kbd "<C-S-tab>") 'previous-buffer)
 (global-set-key (kbd "C-q") 'keyboard-quit)
 (global-set-key (kbd "M-g") 'goto-line)
-(global-set-key (kbd "C-x C-d") 'duplicate-line)
+(global-set-key (kbd "C-,") 'duplicate-line)
 (global-set-key (kbd "C->") 'end-of-buffer)
 (global-set-key (kbd "C-<") 'beginning-of-buffer)
 (global-set-key (kbd "C-c C-d") 'dired)
@@ -421,7 +480,8 @@
 (global-set-key (kbd "A-<left>") 'backward-word)
 (global-set-key (kbd "A-M-<up>") (lambda () (interactive) (scroll-down 5)))
 (global-set-key (kbd "A-M-<down>") (lambda () (interactive) (scroll-up 5)))
-
+(global-set-key (kbd "M-µ") 'toggle-frame-maximized)
+(global-set-key (kbd "M-ƒ") 'toggle-frame-fullscreen)
 (global-set-key (kbd "M-x") 'counsel-M-x)
 (global-set-key (kbd "C-o") 'counsel-find-file)
 (global-set-key (kbd "C-M-o") 'projectile-find-file)
@@ -450,11 +510,13 @@
 (global-set-key (kbd "C-M->") 'mc/skip-to-next-like-this)
 
 (global-unset-key (kbd "C-h C-h"))
-(global-unset-key (kbd "C-x C-p"))
+(global-unset-key (kbd "C-h C-h"))
 
 ;; Set Font
 (set-face-attribute 'default nil
                     :family "JetBrains Mono NL"
-                    :height 120
+		    ;; :family "Pragmata Pro Mono"
+		    :height 120
                     :weight 'medium)
 
+(setq-default line-spacing 0)

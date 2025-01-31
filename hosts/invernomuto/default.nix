@@ -25,22 +25,17 @@ in
 
   networking.hostName = "invernomuto";
 
-  homebrew = {
-    enable = true;
-    caskArgs.no_quarantine = true;
-    onActivation.autoUpdate = false; # Change this when want to update brews
-    brews = [
-      "handbrake"
-    ];
-  };
-
   services.dmenu.enable = false;
+
   services.nfs.server = {
-    enable = true;
+    enable = false;
     exports = ''
       /System/Volumes/Data -ro -alldirs 192.168.64.3
     '';
   };
+
+  services.pueue.enable = true;
+  services.tailscale.enable = true;
 
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
@@ -50,7 +45,7 @@ in
     /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
   '';
 
-  nix.linux-builder.enable = true;
+  nix.linux-builder.enable = false;
 
   system.stateVersion = 4;
 }

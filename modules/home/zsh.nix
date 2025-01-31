@@ -39,7 +39,14 @@
       function nix_shell_prompt
       {
         if [[ -v IN_NIX_SHELL ]]; then
-          print "%B[nix shell]%b"
+          print "%B[nix]%b"
+        fi
+      }
+
+      function nix_shell_name_prompt
+      {
+        if [[ -v DEVSHELL ]]; then
+          print "%B[$DEVSHELL]%b"
         fi
       }
 
@@ -52,7 +59,7 @@
       MNML_INFOLN=()
       MNML_MAGICENTER=()
       MNML_PROMPT=(mnml_status)
-      MNML_RPROMPT=(nix_shell_prompt hostname_prompt $MNML_RPROMPT);
+      MNML_RPROMPT=(nix_shell_prompt nix_shell_name_prompt hostname_prompt $MNML_RPROMPT);
 
       bindkey "^[[3~" delete-char
     '';

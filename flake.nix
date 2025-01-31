@@ -64,6 +64,7 @@
                 ./hosts/invernomuto
                 ./modules/darwin/services/nfsd.nix
                 ./modules/darwin/services/dmenu.nix
+                ./modules/darwin/services/pueue.nix
               ];
             };
           };

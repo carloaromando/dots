@@ -5,19 +5,24 @@
     pinentry_mac # TODO move to macos only file
     pv
     entr
-    shell2http
     coreutils-prefixed
-    websocat
-    kcat
     rlwrap
 
+    # networking
+    iperf
+    websocat
+    kcat
+    shell2http
+    tailscale
+    lagrange
+
     # programming
+    bazelisk
 
     ## ninja
     ninja
 
     ## nix 
-    nil
     nixpkgs-fmt
 
     ## python
@@ -37,9 +42,7 @@
     go
 
     ## misc
-    awscli2
-    minio-client
-    coder
+    ansible
 
     # virtualization
     qemu
@@ -55,6 +58,8 @@
     # media
     ffmpeg_5
     yt-dlp
+    localsend
+    mupdf
   ] ++ (with nixcasks; [
     iina
     vlc

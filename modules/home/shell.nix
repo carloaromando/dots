@@ -12,6 +12,7 @@
     nmap
     tshark
     mg
+    magic-wormhole
   ];
 
   home.sessionVariables = {

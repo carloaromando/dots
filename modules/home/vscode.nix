@@ -73,32 +73,25 @@
           };
         }
       ];
-      "[cpp]".editor.defaultFormatter = "xaver.clang-format";
       editor.formatOnSave = true;
       editor.inlayHints.enabled = "off";
       security.workspace.trust.untrustedFiles = "open";
       diffEditor.ignoreTrimWhitespace = false;
       window.zoomLevel = -1;
-      clang-format.executable = "clang-format";
-      nix.enableLanguageServer = true;
-      nix.serverPath = "nil";
-      nix.serverSettings.nil.formatting.command = [
-        "nixpkgs-fmt"
+      eslint.workingDirectories = [
+        {
+          directory = "coordinator";
+          changeProcessCWD = true;
+        }
       ];
     };
     extensions = with pkgs.vscode-extensions; [
-      bbenoist.nix
-      jnoortheen.nix-ide
       mkhl.direnv
+      dbaeumer.vscode-eslint
+      rust-lang.rust-analyzer
       xaver.clang-format
-      golang.go
+      llvm-vs-code-extensions.vscode-clangd
     ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
-      {
-        name = "vscode-bazel";
-        publisher = "BazelBuild";
-        version = "0.7.0";
-        sha256 = "sha256-/a34MMsHy7zmGrVAtjMWKmulwS+lip3J1YugkACMmxc=";
-      }
       {
         name = "minimal";
         publisher = "calebdoxsey";

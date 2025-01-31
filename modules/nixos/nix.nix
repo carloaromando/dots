@@ -30,13 +30,15 @@
     ];
     settings = {
       max-jobs = "auto";
-      experimental-features = "nix-command flakes repl-flake";
+      experimental-features = "nix-command flakes repl-flake"; # pipe-operators
       trusted-users = [ "root" "carlo" ];
+      always-allow-substitutes = true;
+      extra-nix-path = "nixpkgs=flake:nixpkgs";
     };
-    extraOptions = ''
-      keep-outputs = true
-      keep-derivations = true
-    '';
+    # extraOptions = ''
+    #   keep-outputs = true
+    #   keep-derivations = true
+    # '';
     gc = {
       automatic = pkgs.lib.mkDefault true;
       options = pkgs.lib.mkDefault "--delete-older-than 1w";
